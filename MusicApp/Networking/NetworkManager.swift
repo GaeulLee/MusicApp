@@ -68,7 +68,7 @@ final class NetworkManager {
                 completion(.success(musics))
                 
             } else {
-                print("parse싪패")
+                print("parse 실패")
                 completion(.failure(.parseError))
             }
         }

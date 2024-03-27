@@ -42,7 +42,7 @@ class MusicCell: UITableViewCell {
     private func loadImage(){
         guard let urlString = self.imageUrl, let url = URL(string: urlString)  else { return }
         
-        DispatchQueue.global().async {
+        DispatchQueue.global().async { // 오래 걸리는 작업이기 때문에 다른 스레드에서 동작시킴
             guard let data = try? Data(contentsOf: url) else { return }
             // 오래걸리는 작업이 일어나고 있는 동안에 url이 바뀔 가능성 제거 ⭐️⭐️⭐️
             guard urlString == url.absoluteString else { return }

@@ -12,10 +12,14 @@ class ViewController: UIViewController {
     // MARK: - property
     @IBOutlet weak var musicTableView: UITableView!
     
-    let searchController = UISearchController()
-    
     var networkManager = NetworkManager.shared // 네트워크 매니저 (싱글톤)
     var musicArrays: [Music] = []     // 음악 데이터 (빈 배열로 시작)
+    
+    // 방법 - 1) 서치 컨트롤러 생성 => 네비게이션 아이템에 할당
+    // let searchController = UISearchController()
+    
+    // 방법 - 2) 서치 result 컨트롤러 => 검색할 때 해당 뷰컨(SearchResultViewController)을 보여줌
+    let searchController = UISearchController(searchResultsController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchResultViewController") as! SearchResultViewController)
     
 
     // MARK: - viewDidLoad
@@ -34,11 +38,13 @@ class ViewController: UIViewController {
 
         navigationItem.searchController = searchController
         
-        // 1) (단순) 서치바 사용
-        searchController.searchBar.delegate = self
+        // 방법 - 1) (단순) 서치바 사용
+        //searchController.searchBar.delegate = self
         
-        // 2) 서치(결과) 컨트롤러의 사용 (복잡한 구현 가능)
+        // 방법 - 2) 서치(결과) 컨트롤러의 사용 (복잡한 구현 가능)
         // => 글자마다 검색 기능 + 새로운 화면을 보여주는 것도 가능
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.autocapitalizationType = .none // 첫글자 대문자 X
     }
     
     // MARK: - set tableView
@@ -105,27 +111,40 @@ extension ViewController: UITableViewDelegate {
     
 }
 
+// 방법 - 1) (단순) 서치바 사용 시 델리게이트
 extension ViewController: UISearchBarDelegate {
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(#function + " \(searchText)")
-        
-        self.musicArrays = [] // 한 글자씩 입력될 때 마다 새로운 검색 결과 보여주기 위해 빈 배열로 만들어 줌
-        
-        // 네트워킹 (입력한 문자열로 검색)
-        networkManager.fetchMusic(searchTerm: searchText) { result in
-            print(#function)
-            
-            switch result {
-            case .success(let musicData):
-                self.musicArrays = musicData
-                DispatchQueue.main.async {
-                    self.musicTableView.reloadData()
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-        
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        print(#function + " \(searchText)")
+//        
+//        self.musicArrays = [] // 한 글자씩 입력될 때 마다 새로운 검색 결과 보여주기 위해 빈 배열로 만들어 줌
+//        
+//        // 네트워킹 (입력한 문자열로 검색)
+//        networkManager.fetchMusic(searchTerm: searchText) { result in
+//            print(#function)
+//            
+//            switch result {
+//            case .success(let musicData):
+//                self.musicArrays = musicData
+//                DispatchQueue.main.async {
+//                    self.musicTableView.reloadData()
+//                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
+}
+
+
+// 방법 - 2) 서치(결과) 컨트롤러의 사용 시 델리게이트
+extension ViewController: UISearchResultsUpdating {
+    
+    // 유저가 글자를 입력하는 순간마다 호출되는 메서드 => 일반적으로 다른 화면을 보여줄 때 구현
+    func updateSearchResults(for searchController: UISearchController) {
+        // 글자를 입력하는 순간에 다른 화면을 보여주고 싶다면 (컬렉션 뷰를 보여줌)
+        let vc = searchController.searchResultsController as! SearchResultViewController
+        vc.searchTerm = searchController.searchBar.text ?? "" // 다른 화면(컬렉션 뷰)에 검색한 단어 전달
     }
+
 }
