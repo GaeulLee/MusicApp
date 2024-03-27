@@ -66,15 +66,13 @@
 		9B941FF92BB1A67D003BB11A /* MusicApp */ = {
 			isa = PBXGroup;
 			children = (
+				9B941FFA2BB1A67D003BB11A /* AppDelegate.swift */,
+				9B941FFC2BB1A67D003BB11A /* SceneDelegate.swift */,
 				9B94201A2BB2F29B003BB11A /* Helpers */,
 				9B9420172BB2EF5C003BB11A /* Networking */,
 				9B9420102BB2DA0D003BB11A /* Models */,
 				9B94200F2BB2DA02003BB11A /* Views */,
 				9B94200E2BB2D9E9003BB11A /* Controllers */,
-				9B941FFA2BB1A67D003BB11A /* AppDelegate.swift */,
-				9B941FFC2BB1A67D003BB11A /* SceneDelegate.swift */,
-				9B941FFE2BB1A67D003BB11A /* ViewController.swift */,
-				9B9420002BB1A67D003BB11A /* Main.storyboard */,
 				9B9420032BB1A67E003BB11A /* Assets.xcassets */,
 				9B9420052BB1A67E003BB11A /* LaunchScreen.storyboard */,
 				9B9420082BB1A67E003BB11A /* Info.plist */,
@@ -85,6 +83,7 @@
 		9B94200E2BB2D9E9003BB11A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				9B941FFE2BB1A67D003BB11A /* ViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -94,6 +93,7 @@
 			children = (
 				9B9420132BB2E7E0003BB11A /* MusicCell.swift */,
 				9B9420142BB2E7E0003BB11A /* MusicCell.xib */,
+				9B9420002BB1A67D003BB11A /* Main.storyboard */,
 			);
 			path = Views;
 			sourceTree = "<group>";

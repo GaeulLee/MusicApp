@@ -15,7 +15,7 @@ enum NetworkError: Error {
 }
 
 // MARK: - Networking 클래스 모델
-class NetworkManager {
+final class NetworkManager {
     
     // 싱글톤 패턴으로 설계
     static let shared = NetworkManager()
